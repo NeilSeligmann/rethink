@@ -100,6 +100,13 @@ export default class Device extends TLVDevice {
 			write_attach: [0x1f9, 0x1fa]
 		})
 
+		this.addField(config, {
+			id: 0x232, name: 'comulative_energy_consumption',
+			read_xform: (raw) => {
+				return raw
+			},
+		})
+
 		this.setConfig(config)
 	}
 }
