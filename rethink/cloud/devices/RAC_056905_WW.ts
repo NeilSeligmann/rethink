@@ -11,7 +11,7 @@ export default class Device extends TLVDevice {
 		const config: Config = allowExtendedType({
 			...HADevice.deviceConfig(provisionMsg, { name: 'LG Air Conditioner' }),
 			components: {
-				"climate": {
+				climate: {
 					platform: "climate",
 					unique_id: '$deviceid-climate',
 					name: 'Climate',
@@ -33,18 +33,18 @@ export default class Device extends TLVDevice {
 					swing_mode_state_topic: '$this/swing_mode',
 					swing_mode_command_topic: '$this/swing_mode/set'
 				},
-				"light": {
+				light: {
 					platform: "switch",
 					unique_id: '$deviceid-light',
 					name: 'Display Light',
 					state_topic: '$this/light',
 					command_topic: '$this/light/set'
 				},
-				"power": {
+				power: {
 					platform: "number",
 					unique_id: '$deviceid-power',
 					name: 'Power Consumption',
-					device_class: 'power',
+					device_class: 'energy',
 					unit_of_measurement: 'W',
 					state_topic: '$this/power'
 				}
