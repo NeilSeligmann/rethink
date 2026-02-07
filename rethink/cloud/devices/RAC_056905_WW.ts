@@ -41,7 +41,7 @@ export default class Device extends TLVDevice {
 					command_topic: '$this/light/set'
 				},
 				energy: {
-					platform: "number",
+					platform: "sensor",
 					unique_id: '$deviceid-energy',
 					name: 'Energy Consumption',
 					device_class: 'power',
