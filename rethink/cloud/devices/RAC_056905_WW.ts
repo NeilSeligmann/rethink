@@ -22,6 +22,7 @@ export default class Device extends TLVDevice {
 			id: 0x1fd, name: 'current_temperature', writable: false,
 			read_xform: (raw) => raw/2
 		})
+
 		this.addField(config, {
 			id: 0x1f7, name: 'power', readable: false,
 			write_xform: (val) => val === 'ON' ? 1 : 0,
@@ -44,9 +45,9 @@ export default class Device extends TLVDevice {
 			write_xform: (val) => {
 				const modes2clip = { cool: 0, dry: 1, fan_only:2, heat:4, auto:6 }
 				if (val === 'off') {
-		                    // Call function power (0x1f7) with value OFF
-		                    this.setProperty('power', 'OFF')
-		                }
+					// Call function power (0x1f7) with value OFF
+					this.setProperty('power', 'OFF')
+				}
 				return modes2clip[val]
 			},
 			write_attach: [0x1fa, 0x1fe]
@@ -85,7 +86,7 @@ export default class Device extends TLVDevice {
 		}, false)
 
 		this.addField(config, {
-			id: 0x322, name: 'swing_mode', 
+			id: 0x322, name: 'swing_mode',
 			read_xform: (raw) => {
 				const modes2ha = [ "off", "1", "2", "3", "4", "5" ]
 				modes2ha[13] = "1-3"
@@ -101,7 +102,17 @@ export default class Device extends TLVDevice {
 		})
 
 		this.addField(config, {
+			id: 0x21f,
+			name: 'light',
+			readable: false,
+			write_xform: (val) => val === 'ON' ? 1 : 0,
+			// write_attach: (raw) => raw ? [0x1f9, 0x1fa] : [],
+			read_xform: (raw) => raw === 1 ? 'ON' : 'OFF'
+		})
+
+		this.addField(config, {
 			id: 0x232, name: 'comulative_energy_consumption',
+			writable: false,
 			read_xform: (raw) => {
 				return raw
 			},
