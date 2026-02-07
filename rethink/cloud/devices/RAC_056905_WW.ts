@@ -40,13 +40,13 @@ export default class Device extends TLVDevice {
 					state_topic: '$this/light',
 					command_topic: '$this/light/set'
 				},
-				power: {
+				energy: {
 					platform: "number",
-					unique_id: '$deviceid-power',
-					name: 'Power Consumption',
+					unique_id: '$deviceid-energy',
+					name: 'Energy Consumption',
 					device_class: 'energy',
 					unit_of_measurement: 'W',
-					state_topic: '$this/power'
+					state_topic: '$this/energy_consumption'
 				}
 			}
 		})
@@ -143,7 +143,7 @@ export default class Device extends TLVDevice {
 
 		this.addField(config, {
 			id: 0x232,
-			name: 'power',
+			name: 'energy_consumption',
 			writable: false,
 			read_xform: (raw) => raw
 		}, false)
