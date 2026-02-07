@@ -44,7 +44,7 @@ export default class Device extends TLVDevice {
 					platform: "number",
 					unique_id: '$deviceid-energy',
 					name: 'Energy Consumption',
-					device_class: 'energy',
+					device_class: 'power',
 					unit_of_measurement: 'W',
 					state_topic: '$this/energy_consumption'
 				}
