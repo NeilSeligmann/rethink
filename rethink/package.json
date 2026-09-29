@@ -18,6 +18,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsx rethink-cloud.ts",
-    "start": "node dist/rethink-cloud.js"
+    "start": "node dist/rethink-cloud.js",
+    "check": "node dist/preflight-cli.js"
   }
 }

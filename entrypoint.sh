@@ -54,6 +54,9 @@ mkdir -p /config
 shopt -s dotglob
 
 for item in /config/*; do
+    # An empty /config leaves the glob unexpanded, which used to link a file literally named "*"
+    [ -e "$item" ] || continue
+
     name=$(basename "$item")
     target="/rethink/$name"
 
@@ -92,7 +95,33 @@ if [ "$RETHINK_SERVER_MODE" = "cloud" ] || [ "$RETHINK_SERVER_MODE" = "both" ]; 
   echo "[INFO] Starting CLOUD service..."
   npm run start > /var/log/rethink/cloud.log 2>&1 &
 fi
-sleep 5
+
+# Wait for the CA to exist rather than guessing how long it takes. Generating a 4096 bit key can
+# easily outlast a fixed sleep on a slow NAS, and losing this copy means /config never persists the
+# CA, so a new one is generated on every restart and every paired appliance stops trusting us.
+wait_for_ca() {
+    if [ "$RETHINK_SERVER_MODE" != "cloud" ] && [ "$RETHINK_SERVER_MODE" != "both" ]; then
+        sleep 5
+        return
+    fi
+
+    if [ -f /config/ca.cert ] && [ -f /config/ca.key ]; then
+        return
+    fi
+
+    for _ in $(seq 1 60); do
+        if [ -f /rethink/ca.cert ] && [ -f /rethink/ca.key ]; then
+            # both paths exist, give openssl a moment to finish writing the second one
+            sleep 1
+            return
+        fi
+        sleep 1
+    done
+
+    echo "[WARN] the CA certificate and key did not appear within 60s"
+}
+
+wait_for_ca
 echo "[INFO] Ensuring /config contains CA certificate and key"
 
 for f in ca.cert ca.key; do
