@@ -41,6 +41,16 @@ Miscelanneous utilities:
 - [packet-sender](rethink/packet-sender.js) - an utility to create TLV-formatted packets & send them via MQTT to the appliance. It connects to rethink-cloud
 - [appliance simulator](appliance-simulator) - a program which allows the Wi-Fi module to be operated without connection to an appliance. It simulates a minimum set of UART responses to activate the Wi-Fi module.
 
+## Troubleshooting
+
+If your appliances aren't showing up in HomeAssistant, `rethink-cloud` checks its own configuration
+and tries to reach your MQTT broker every time it starts, and prints what it found. You can also run
+those checks at any time with `npm run check`, or `docker exec rethink npm run check` if you're
+using the container.
+
+See [MQTT troubleshooting](docs/mqtt-troubleshooting.md) for what the messages mean and what to do
+about them.
+
 ## Notice
 
 LG ThinQ is likely a registered trademark, or whatever, I don't care. The name is used here for identification purposes only. I'm not in any way affiliated with LG.
